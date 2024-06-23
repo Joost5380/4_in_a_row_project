@@ -1,60 +1,65 @@
-import pygame
-import numpy as np
 import sys
 import math
-from Game_logic import Create_board, Drop_piece, Valid_location, Check_win, Flipping_the_board, Next_open_row
-from Desigh import make_board
+from Game_logic import *
+from Constants import *
 
-pygame.init()
+def Game_without_AI():
 
-screen = pygame.display.set_mode(size=(800, 600))
+    """
+    Bronnen 
+    https://pygame.readthedocs.io/en/latest/1_intro/intro.html
+    https://www.pygame.org/docs/ref/event.html#pygame.event.Event
+    https://www.youtube.com/watch?v=y9VG3Pztok8
+    https://www.youtube.com/watch?v=l-hh51ncgDI&t=585s 
+    https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/
+    """
 
-board = Create_board()
-game_over = False
+    pygame.init()
 
-SQUARESIZE = 100
+    def draw_board(board):
+        for c in range(column_count):
+            for r in range(row_count):
+                pygame.draw.rect(screen, BLUE, (c * SQUARESIZE, r * SQUARESIZE + SQUARESIZE, SQUARESIZE, SQUARESIZE))
+                pygame.draw.circle(screen, BLACK, (
+                int(c * SQUARESIZE + SQUARESIZE / 2), int(r * SQUARESIZE + SQUARESIZE + SQUARESIZE / 2)), RADIUS)
 
-make_board(board, screen)
-pygame.display.update()
+        for c in range(column_count):
+            for r in range(row_count):
+                if board[r][c] == 1:
+                    pygame.draw.circle(screen, RED, (
+                    int(c * SQUARESIZE + SQUARESIZE / 2), height - int(r * SQUARESIZE + SQUARESIZE / 2)), RADIUS)
+                elif board[r][c] == 2:
+                    pygame.draw.circle(screen, YELLOW, (
+                    int(c * SQUARESIZE + SQUARESIZE / 2), height - int(r * SQUARESIZE + SQUARESIZE / 2)), RADIUS)
+        pygame.display.update()
 
-turn = 0
+    screen = pygame.display.set_mode(size)
 
-while not game_over:
+    board = create_board()
+    draw_board(board)
+    pygame.display.update()
+    game_over = False
+    turn = 0
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
+    while not game_over:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            print(event.pos)
-             # Vraag om input speler 1
-            if turn == 0:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 posx = event.pos[0]
-                column = int(math.floor(posx / SQUARESIZE))
+                col = int(math.floor(posx / SQUARESIZE))
 
-                if Valid_location(board, column):
-                    row = Next_open_row(board, column)
-                    Drop_piece(board, row, column, 1)
+                if is_valid_location(board, col):
+                    row = get_next_open_row(board, col)
+                    drop_piece(board, row, col, 1 if turn == 0 else 2)
 
-                    if Check_win(board, 1):
-                        print("Player 1 wins!")
-                        game_over = True
-            # # Vraag om input speler 2
-            else:
-                posx = event.pos[0]
-                column = int(math.floor(posx / SQUARESIZE))
-
-                if Valid_location(board, column):
-                    row = Next_open_row(board, column)
-                    Drop_piece(board, row, column, 2)
-
-                    if Check_win(board, 2):
-                        print("Player 2 wins!")
+                    if check_win(board, 1 if turn == 0 else 2):
+                        print(f"Player {turn + 1} wins!")
                         game_over = True
 
-            Flipping_the_board(board)
-            make_board(board, screen)
+                    flipping_the_board(board)
+                    draw_board(board)
 
-            turn += 1
-            turn = turn % 2
-
+                    turn += 1
+                    turn = turn % 2

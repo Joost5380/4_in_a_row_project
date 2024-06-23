@@ -1,46 +1,45 @@
 import numpy as np
+import pygame
+from Constants import *
 
-row_count = 6
-column_count = 7
-
-
-def Create_board():
+# In deze functie wordt het bord aangemaakt
+def create_board():
     board = np.zeros((row_count, column_count))
     return board
 
-def Drop_piece(board, row, column, piece):
+# In deze functie wordt gekeken of je een stukje kan plaatsen
+def drop_piece(board, row, column, piece):
     board[row][column] = piece
 
-def Valid_location(board, column):
-    # De 5 zorgt ervoor dat je begint op de onderste rij
-    return board[row_count-1][column] == 0
+# Deze functie controleert of een piece in de kolom kan worden geplaatst.
+def is_valid_location(board, column):
+    return board[row_count - 1][column] == 0
 
-def Next_open_row(board, column):
-    for ROW in range(row_count):
-        if board[ROW][column] == 0:
-            return ROW
+# Deze functie geeft de eerst beschikbare rij in een kolom.
+def get_next_open_row(board, column):
+    for r in range(row_count):
+        if board[r][column] == 0:
+            return r
 
-def Flipping_the_board(board):
-    print(np.flip(board, 0))
-
-def Check_win(board, piece):
-    for ROW in range(row_count):
-        for COLUMN in range(column_count):
-            if board[ROW][COLUMN] == piece:
-
-                # Horizontale winst controleren
-                if COLUMN + 3 < column_count and all(board[ROW][COLUMN + i] == piece for i in range(4)):
+# Deze functie kijkt of iemand heeft gewonnen.
+def check_win(board, piece):
+    for row in range(row_count):
+        for column in range(column_count):
+            if board[row][column] == piece:
+                # Hier wordt gekeken of er horizontaal is gewonnen
+                if column + 3 < column_count and all(board[row][column + i] == piece for i in range(4)):
                     return True
-
-                # Verticale winst controleren
-                if ROW + 3 < row_count and all(board[ROW + i][COLUMN] == piece for i in range(4)):
+                # Hier wordt gekeken of er verticaal is gewonnen
+                if row + 3 < row_count and all(board[row + i][column] == piece for i in range(4)):
                     return True
-
-                # Positieve diagonale winst controleren
-                if COLUMN + 3 < column_count and ROW + 3 < row_count and all(board[ROW + i][COLUMN + i] == piece for i in range(4)):
+                # Hier wordt gekeken of de positive diagonaal heeft gewonnen
+                if column + 3 < column_count and row + 3 < row_count and all(board[row + i][column + i] == piece for i in range(4)):
                     return True
-
-                # Negatieve diagonale winst controleren
-                if COLUMN + 3 < column_count and ROW - 3 >= 0 and all(board[ROW - i][COLUMN + i] == piece for i in range(4)):
+                # Hier wordt gekeken of de negative diagonaal heeft gewonnen
+                if column + 3 < column_count and row - 3 >= 0 and all(board[row - i][column + i] == piece for i in range(4)):
                     return True
     return False
+
+# Dit is om te kijken of het goed werkt en om te zorgen dat de index niet boven aan begint
+def flipping_the_board(board):
+    print(np.flip(board, 0))
