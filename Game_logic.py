@@ -42,4 +42,4 @@ def check_win(board, piece):
 
 # Dit is om te kijken of het goed werkt en om te zorgen dat de index niet boven aan begint
 def flipping_the_board(board):
-    print(np.flip(board, 0))
+    np.flip(board, 0)
