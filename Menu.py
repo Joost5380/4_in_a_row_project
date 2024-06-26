@@ -7,6 +7,8 @@ from AI_Tegen_RandomAI import Ai_Tegen_RandomAI
 from MINIMAX_tegen_MINIMAX import MINIMAX_tegen_MINIMAX
 from MINIMAX_Pruning_tegen_MINIMAX import MINIMAX_tegen_MINIMAXPRUNING
 
+
+"""Alle functies werken op de manier dat de tkinter wordt gesloten en dan de game starten."""
 def start_game_with_ai():
     root.destroy()
     Game_with_AI()
@@ -34,32 +36,41 @@ def start_MINIMAX_tegen_MINIMAXPRUNING():
 root = tk.Tk()
 root.title("Selecteer Spelmodus")
 
-# Venstergrootte vergroot
+"""Venstergrootte vergroot"""
 window_size = 900
 root.geometry(f"{window_size}x{window_size}")
 root.configure(bg='white')
 
-# Laad en pas de achtergrondafbeelding aan
+"""Laad en pas de achtergrondafbeelding aan"""
 background_image = Image.open('Connect_4.webp')
 original_width, original_height = background_image.size
 new_width = window_size - 40
 new_height = int((original_height / original_width) * new_width)
 
+"""Dit past de afbeelding aan op de venstergrote"""
+
 if new_height > window_size - 350:
     new_height = window_size - 350
     new_width = int((original_width / original_height) * new_height)
-
 background_image = background_image.resize((new_width, new_height), Image.LANCZOS)
 background_photo = ImageTk.PhotoImage(background_image)
+
+"""De witte kleur om het plaatje heen"""
 
 background_label = tk.Label(root, image=background_photo, bg='white')
 background_label.place(x=(window_size - new_width) // 2, y=60, width=new_width, height=new_height)
 
+"""De tekst boven het plaatje"""
+
 label = tk.Label(root, text="Kies of je tegen een AI wilt spelen of tegen elkaar", font=("Aptos", 26), bg='white', fg='black', pady=10)
 label.pack(side='top', pady=20)
 
+"""De y cordinaten van de knoppen"""
+
 button_y1 = window_size - 240
 button_y2 = window_size - 140
+
+"""Stijl van de knop"""
 
 button_style = {
     'font': ("Aptos", 18),
@@ -70,6 +81,8 @@ button_style = {
     'relief': 'raised',
     'borderwidth': 3
 }
+
+"""Hier worden de knoppen gemaakt met en op de juiste plek neer gezet"""
 
 button_pvp = tk.Button(root, text="Tegen elkaar", command=start_game_without_ai, **button_style)
 button_pvp.place(relx=0.15, y=button_y1, anchor='center')

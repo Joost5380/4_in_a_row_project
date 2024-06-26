@@ -5,22 +5,28 @@ from Constants import *
 import random
 def Random_AI_AI():
     pygame.init()
-
+    """Hier wordt het spelbord gemaakt"""
     board, screen, draw_board = initialize_and_draw_board()
+
     my_font = pygame.font.SysFont("Aptos", 70)
 
-    turn = random.randint(0, 1)
-
-    game_over = False
+    turn = random.randint(0, 1)  # Hier wordt bepaalt random wie er mag beginnen
+    game_over = False  # Als het True is wordt het spel gesloten
     while not game_over:
         for event in pygame.event.get() and turn == 0 and not game_over:
             if event.type == pygame.QUIT:
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                # Hier wordt gekeken naar de x cordinaat van een muisklik om een steetje te plaatsen
                 posx = event.pos[0]
+                # Hiermee wordt bepaald de x cordinaat van de kolom
                 col = int(math.floor(posx / SQUARESIZE))
-
+                """
+                Hier wordt gekenen of de locatie valide is.
+                Verder wordt er gekeken of je een steentje op die plek mag zetten
+                Als je hebt gewonnen komt dat in beeld en stopt het spel                       
+                """
                 if is_valid_location(board, col):
                     row = get_next_open_row(board, col)
                     drop_piece(board, row, col, 1 if turn == 0 else 2)
@@ -38,6 +44,13 @@ def Random_AI_AI():
                     turn = turn % 2
 
         if turn == 1 and not game_over:
+            """
+            Random AI
+            Hier wordt op een random plek een steentje neer gezet 
+            Verder wordt er gekeken of je een steentje op die plek mag zetten
+            Als dat zo is wordt er een steetje gezet
+            Als je hebt gewonnen komt dat in beeld en stopt het spel
+            """
             col = random.randint(0, column_count - 1)
 
             if is_valid_location(board, col):
