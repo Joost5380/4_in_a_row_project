@@ -7,6 +7,7 @@ def create_board():
     board = np.zeros((row_count, column_count))
     return board
 
+
 # In deze functie wordt gekeken of je een stukje kan plaatsen
 def drop_piece(board, row, column, piece):
     board[row][column] = piece
@@ -43,7 +44,6 @@ def check_win(board, piece):
 # Dit is om te kijken of het goed werkt en om te zorgen dat de index niet boven aan begint
 def flipping_the_board(board):
     print(np.flip(board, 0))
-
 
 def initialize_and_draw_board():
     def draw_board(board, screen):

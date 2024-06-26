@@ -8,6 +8,7 @@ def Random_AI_AI():
 
     board, screen, draw_board = initialize_and_draw_board()
     my_font = pygame.font.SysFont("Aptos", 70)
+
     turn = random.randint(0, 1)
 
     game_over = False

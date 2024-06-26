@@ -47,6 +47,42 @@ def minimax(board, depth, alpha, beta, maximizingPlayer):
                 break
         return column, value
 
+def minimax_without_pruning(board, depth, maximizingPlayer):
+    valid_locations = [c for c in range(column_count) if is_valid_location(board, c)]
+    if depth == 0 or check_win(board, 1) or check_win(board, 2) or len(valid_locations) == 0:
+        if check_win(board, 2):
+            return (None, 100000000000000)
+        elif check_win(board, 1):
+            return (None, -10000000000000)
+        else:
+            return (None, Looking_at_board_positions(board, 2))
+
+    if maximizingPlayer:
+        value = MINI
+        column = random.choice(valid_locations)
+        for c in valid_locations:
+            row = get_next_open_row(board, c)
+            copy_board = np.copy(board)
+            drop_piece(copy_board, row, c, 2)
+            new_score = minimax_without_pruning(copy_board, depth - 1, False)[1]
+            if new_score > value:
+                value = new_score
+                column = c
+        return column, value
+
+    else:
+        value = MAX
+        column = random.choice(valid_locations)
+        for c in valid_locations:
+            row = get_next_open_row(board, c)
+            copy_board = np.copy(board)
+            drop_piece(copy_board, row, c, 1)
+            new_score = minimax_without_pruning(copy_board, depth - 1, True)[1]
+            if new_score < value:
+                value = new_score
+                column = c
+        return column, value
+
 def Looking_at_board_positions(board, piece):
     score = 0
     opp_piece = 1 if piece == 2 else 2
@@ -99,40 +135,3 @@ def score_window(window, piece, opp_piece):
         score -= 2
 
     return score
-
-
-def minimax_without_pruning(board, depth, maximizingPlayer):
-    valid_locations = [c for c in range(column_count) if is_valid_location(board, c)]
-    if depth == 0 or check_win(board, 1) or check_win(board, 2) or len(valid_locations) == 0:
-        if check_win(board, 2):
-            return (None, 100000000000000)
-        elif check_win(board, 1):
-            return (None, -10000000000000)
-        else:
-            return (None, Looking_at_board_positions(board, 2))
-
-    if maximizingPlayer:
-        value = MINI
-        column = random.choice(valid_locations)
-        for c in valid_locations:
-            row = get_next_open_row(board, c)
-            copy_board = np.copy(board)
-            drop_piece(copy_board, row, c, 2)
-            new_score = minimax_without_pruning(copy_board, depth - 1, False)[1]
-            if new_score > value:
-                value = new_score
-                column = c
-        return column, value
-
-    else:
-        value = MAX
-        column = random.choice(valid_locations)
-        for c in valid_locations:
-            row = get_next_open_row(board, c)
-            copy_board = np.copy(board)
-            drop_piece(copy_board, row, c, 1)
-            new_score = minimax_without_pruning(copy_board, depth - 1, True)[1]
-            if new_score < value:
-                value = new_score
-                column = c
-        return column, value

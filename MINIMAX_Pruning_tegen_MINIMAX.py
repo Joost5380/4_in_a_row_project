@@ -4,7 +4,7 @@ from Game_logic import *
 from Constants import *
 
 from MINI_MAX_PRUNING import minimax, minimax_without_pruning
-def MINI_MAX_tegen_MINI_MAX():
+def MINIMAX_tegen_MINIMAXPRUNING():
     pygame.init()
 
     board, screen, draw_board = initialize_and_draw_board()
@@ -52,4 +52,4 @@ def MINI_MAX_tegen_MINI_MAX():
         pygame.time.wait(5000)
 
 if __name__ == '__main__':
-    MINI_MAX_tegen_MINI_MAX()
+    MINIMAX_tegen_MINIMAXPRUNING()
