@@ -2,39 +2,17 @@ import sys
 import math
 from Game_logic import *
 from Constants import *
-from MINI_MAX_PRUNING import minimax
-
-def Game_with_AI():
+import random
+def Random_AI_AI():
     pygame.init()
 
-    def draw_board(board):
-        for c in range(column_count):
-            for r in range(row_count):
-                pygame.draw.rect(screen, BLUE, (c * SQUARESIZE, r * SQUARESIZE + SQUARESIZE, SQUARESIZE, SQUARESIZE))
-                pygame.draw.circle(screen, BLACK, (
-                int(c * SQUARESIZE + SQUARESIZE / 2), int(r * SQUARESIZE + SQUARESIZE + SQUARESIZE / 2)), RADIUS)
-
-        for c in range(column_count):
-            for r in range(row_count):
-                if board[r][c] == 1:
-                    pygame.draw.circle(screen, RED, (
-                    int(c * SQUARESIZE + SQUARESIZE / 2), height - int(r * SQUARESIZE + SQUARESIZE / 2)), RADIUS)
-                elif board[r][c] == 2:
-                    pygame.draw.circle(screen, YELLOW, (
-                    int(c * SQUARESIZE + SQUARESIZE / 2), height - int(r * SQUARESIZE + SQUARESIZE / 2)), RADIUS)
-        pygame.display.update()
-
-    screen = pygame.display.set_mode(size)
-    pygame.display.set_caption("Connect Four")
-
-    board = create_board()
-    draw_board(board)
-    pygame.display.update()
+    board, screen, draw_board = initialize_and_draw_board()
     my_font = pygame.font.SysFont("Aptos", 70)
-    turn = 0
+    turn = random.randint(0, 1)
+
     game_over = False
     while not game_over:
-        for event in pygame.event.get():
+        for event in pygame.event.get() and turn == 0 and not game_over:
             if event.type == pygame.QUIT:
                 sys.exit()
 
@@ -53,29 +31,32 @@ def Game_with_AI():
                         game_over = True
 
                     flipping_the_board(board)
-                    draw_board(board)
+                    draw_board(board, screen)
 
                     turn += 1
                     turn = turn % 2
 
         if turn == 1 and not game_over:
-            col =
+            col = random.randint(0, column_count - 1)
+
             if is_valid_location(board, col):
                 row = get_next_open_row(board, col)
                 drop_piece(board, row, col, 2)
 
                 if check_win(board, 2):
-                    label = my_font.render("AI wins", 1, RED)
+                    label = my_font.render("AI wins", 1, YELLOW)
                     screen.blit(label, (45, 15))
-                    print(f"Player {turn + 1} wins!")
+                    print("AI wins!")
                     game_over = True
 
                 flipping_the_board(board)
-                draw_board(board)
+                draw_board(board, screen)
 
-                turn += 1
-                turn = turn % 2
+                turn = (turn + 1) % 2
+
 
         if game_over:
             pygame.time.wait(5000)
 
+if __name__ == '__main__':
+    Random_AI_AI()

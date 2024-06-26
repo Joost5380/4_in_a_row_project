@@ -1,7 +1,7 @@
 import numpy as np
 import pygame
 from Constants import *
-
+import random
 # In deze functie wordt het bord aangemaakt
 def create_board():
     board = np.zeros((row_count, column_count))
@@ -42,4 +42,32 @@ def check_win(board, piece):
 
 # Dit is om te kijken of het goed werkt en om te zorgen dat de index niet boven aan begint
 def flipping_the_board(board):
-    np.flip(board, 0)
+    print(np.flip(board, 0))
+
+
+def initialize_and_draw_board():
+    def draw_board(board, screen):
+        for c in range(column_count):
+            for r in range(row_count):
+                pygame.draw.rect(screen, BLUE, (c * SQUARESIZE, r * SQUARESIZE + SQUARESIZE, SQUARESIZE, SQUARESIZE))
+                pygame.draw.circle(screen, BLACK, (
+                    int(c * SQUARESIZE + SQUARESIZE / 2), int(r * SQUARESIZE + SQUARESIZE + SQUARESIZE / 2)), RADIUS)
+
+        for c in range(column_count):
+            for r in range(row_count):
+                if board[r][c] == 1:
+                    pygame.draw.circle(screen, RED, (
+                        int(c * SQUARESIZE + SQUARESIZE / 2), height - int(r * SQUARESIZE + SQUARESIZE / 2)), RADIUS)
+                elif board[r][c] == 2:
+                    pygame.draw.circle(screen, YELLOW, (
+                        int(c * SQUARESIZE + SQUARESIZE / 2), height - int(r * SQUARESIZE + SQUARESIZE / 2)), RADIUS)
+        pygame.display.update()
+
+    screen = pygame.display.set_mode(size)
+    pygame.display.set_caption("Connect Four")
+
+    board = create_board()
+    draw_board(board, screen)
+    pygame.display.update()
+
+    return board, screen, draw_board

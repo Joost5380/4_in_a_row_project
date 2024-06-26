@@ -2,7 +2,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from Game_with_AI import Game_with_AI
 from Game_without_AI import Game_without_AI
-
+from Random_AI import Random_AI_AI
 def start_game_with_ai():
     root.destroy()
     Game_with_AI()
@@ -10,6 +10,10 @@ def start_game_with_ai():
 def start_game_without_ai():
     root.destroy()
     Game_without_AI()
+
+def start_game_versus_random_AI():
+    root.destroy()
+    Random_AI_AI()
 
 root = tk.Tk()
 root.title("Selecteer Spelmodus")
@@ -49,9 +53,15 @@ button_style = {
 }
 
 button_ai = tk.Button(root, text="Tegen AI", command=start_game_with_ai, **button_style)
-button_ai.place(relx=0.3, y=button_y, anchor='center')
+button_ai.place(relx=0.15, y=button_y, anchor='center')
+
+button_ai = tk.Button(root, text="Tegen random AI", command=start_game_with_ai, **button_style)
+button_ai.place(relx=0.4, y=button_y, anchor='center')
+
+button_ai = tk.Button(root, text="Ai tegen random AI", command=start_game_versus_random_AI, **button_style)
+button_ai.place(relx=0.6, y=button_y, anchor='center')
 
 button_pvp = tk.Button(root, text="Tegen elkaar", command=start_game_without_ai, **button_style)
-button_pvp.place(relx=0.7, y=button_y, anchor='center')
+button_pvp.place(relx=0.85, y=button_y, anchor='center')
 
 root.mainloop()
