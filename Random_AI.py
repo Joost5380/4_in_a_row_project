@@ -66,9 +66,8 @@ def Random_AI_AI():
                 flipping_the_board(board)
                 draw_board(board, screen)
 
-                turn = (turn + 1) % 2
-
-
+                turn = (turn + 1) % 2# Hier wordt gezord dat je van speler wisselt
+        # Als het spel is afgelopen blijft het even staan
         if game_over:
             pygame.time.wait(5000)
 

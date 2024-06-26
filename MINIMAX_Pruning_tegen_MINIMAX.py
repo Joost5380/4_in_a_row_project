@@ -10,8 +10,10 @@ def MINIMAX_tegen_MINIMAXPRUNING():
     board, screen, draw_board = initialize_and_draw_board()
 
     my_font = pygame.font.SysFont("Aptos", 70)
-    turn = random.randint(0, 1) #Hier wordt bepaalt random wie er mag beginnen
-    game_over = False #Als het True is wordt het spel gesloten
+    # Hier wordt bepaalt random wie er mag beginnen
+    turn = random.randint(0, 1)
+    # Als het True is wordt het spel gesloten
+    game_over = False
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -24,7 +26,8 @@ def MINIMAX_tegen_MINIMAXPRUNING():
             """
             Minimax AI
             Hier wordt een steentje neer gezet door de Minimax algoritme
-            Verder wordt er gekeken of je een steentje op die plek mag zetten                        Als dat zo is wordt er een steetje gezet
+            Verder wordt er gekeken of je een steentje op die plek mag zetten                        
+            Als dat zo is wordt er een steetje gezet
             Als je hebt gewonnen komt dat in beeld en stopt het spel
             """
             col, minimax_score = minimax_without_pruning(board, 6, True)
